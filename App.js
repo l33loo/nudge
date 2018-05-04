@@ -1,18 +1,62 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput } from 'react-native';
+
+
+import SignIn from './app/screens/SignIn';
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {text: ''};
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
+       <Image
+        style={{
+          flex: 0.5,
+          flexDirection: 'column',
+          alignItems: 'flex-start', 
+          width: 100, 
+          height: 100,
+          backgroundColor: 'blue'
+        }}
+        source={require('./app/images/nudgeLogo.png')}
+        resizeMode="contain"
+          />
+          <Text  style={{
+            flex: 0.2,
+            height: 40,
+            backgroundColor: 'green'
+      
+          }}> 
+            Login 
+          </Text>
+          {/* <TextInput
+          style={{
+            flex: 2,
+            height: 40,
+            backgroundColor: 'purple'
+      
+          }}
+          placeholder="Type here to translate!"
+          onChangeText={(text) => this.setState({text})}
+        /> */}
+        <TextInput
+          style={{
+            flex: 0.2,
+            height: 40,
+            backgroundColor: 'green'
+      
+          }}
+          placeholder="Type here to translate!"
+          onChangeText={(text) => this.setState({text})}
+        />
+      <SignIn />
       </View>
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
