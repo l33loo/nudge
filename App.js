@@ -1,24 +1,38 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, ActivityIndicator } from 'react-native';
 import SignIn from './app/screens/SignIn';
 import Register from './app/screens/Register';
+import Enter from './app/screens/Enter';
 import { createStackNavigator } from 'react-navigation';
 
 const NavigationApp = createStackNavigator({
+  Enter: { screen: Enter },
   SignIn: { screen: SignIn },
-  Register: { screen: Register },
+  Register: { screen: Register }
 })
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {text: ''};
+    this.state = {loadTime: true};
+    
+  }
+  componentWillMount()
+  {
+    setTimeout(()=>{
+this.setState({
+  loadTime: false
+})
+    }, 3000)
   }
   render() {
     return (
       <View style={styles.container}>
-        {/* <Image
+      {
+        
+        this.state.loadTime ?
+        <View style={loadStyle.container}>
+         <Image
         style={{
-          flex: 0.2,
           flexDirection: 'column',
           alignItems: 'flex-start', 
           width: 100, 
@@ -26,7 +40,12 @@ export default class App extends React.Component {
         }}
         source={require('./app/images/nudgeLogo.png')}
         resizeMode="contain"
-          /> */}
+         />
+        <ActivityIndicator size="large"/>
+        </View>
+
+        :
+        <View style={styles.container}>
           <NavigationApp  style={{
           flex: 0.2,
           flexDirection: 'column',
@@ -35,15 +54,27 @@ export default class App extends React.Component {
           height: 100
         }}
         />
-      </View>
+          </View>
+      }
+        </View>
+          
+      
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#fffFFF',
-    // alignItems: 'center',
+    backgroundColor: '#000000',
+    justifyContent: 'center',
+  },
+});
+
+const loadStyle = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
     justifyContent: 'center',
   },
 });

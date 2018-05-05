@@ -11,15 +11,23 @@ export default class SignIn extends Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View>
+      <View style = {styles.container}>
         <TextInput text={" Email"}/>
         <TextInput text={" Password"} />
         
-    <Button text={"Login"}/>
+    <Button text = {<Text style={{color:'white', textAlign: 'center'}}> Sign in </Text>}/>
     <Text
-          onPress= { () => navigate('Register') }>Navigate to Register
+          onPress= { () => navigate('Register') }>Don't have an account? Register
         </Text>
     </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
+});

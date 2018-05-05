@@ -3,11 +3,12 @@ import {colors} from "../../config/styles";
 
 export default StyleSheet.create({
     textinput: {
-      height: 30,
-      width: 200,
-      borderWidth: 0.5,
+      height: 40,
+      alignSelf: 'stretch',
+      // borderBottomColor: colors.secondaryColor,
+      // borderBottomWidth: 0.5,
       padding: 10,
       borderRadius: 2,
-      margin: 2
+      backgroundColor: 'white',
     }
 })

@@ -6,6 +6,8 @@ export default StyleSheet.create({
         padding: 10,
         backgroundColor: colors.secondaryColor,
         borderRadius: 2,
-        width: 80
+        width: 220,
+        marginBottom: 10,
+        marginTop: 10
     }
 })
