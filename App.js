@@ -1,9 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TextInput } from 'react-native';
-
-
 import SignIn from './app/screens/SignIn';
+import Register from './app/screens/Register';
+import { createStackNavigator } from 'react-navigation';
 
+const NavigationApp = createStackNavigator({
+  SignIn: { screen: SignIn },
+  Register: { screen: Register },
+})
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -12,47 +16,25 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-       <Image
+        {/* <Image
         style={{
-          flex: 0.5,
+          flex: 0.2,
           flexDirection: 'column',
           alignItems: 'flex-start', 
           width: 100, 
-          height: 100,
-          backgroundColor: 'blue'
+          height: 100
         }}
         source={require('./app/images/nudgeLogo.png')}
         resizeMode="contain"
-          />
-          <Text  style={{
-            flex: 0.2,
-            height: 40,
-            backgroundColor: 'green'
-      
-          }}> 
-            Login 
-          </Text>
-          {/* <TextInput
-          style={{
-            flex: 2,
-            height: 40,
-            backgroundColor: 'purple'
-      
-          }}
-          placeholder="Type here to translate!"
-          onChangeText={(text) => this.setState({text})}
-        /> */}
-        <TextInput
-          style={{
-            flex: 0.2,
-            height: 40,
-            backgroundColor: 'green'
-      
-          }}
-          placeholder="Type here to translate!"
-          onChangeText={(text) => this.setState({text})}
+          /> */}
+          <NavigationApp  style={{
+          flex: 0.2,
+          flexDirection: 'column',
+          alignItems: 'flex-start', 
+          width: 100, 
+          height: 100
+        }}
         />
-      <SignIn />
       </View>
     );
   }
@@ -60,8 +42,8 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    // backgroundColor: '#fffFFF',
+    // alignItems: 'center',
     justifyContent: 'center',
   },
 });
