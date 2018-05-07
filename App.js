@@ -5,7 +5,7 @@ import Register from './app/screens/Register';
 import Enter from './app/screens/Enter';
 import Home from './app/screens/Home';
 import Settings from './app/screens/Settings';
-
+import Accel from './app/screens/Accel';
 import { createStackNavigator } from 'react-navigation';
 
 const NavigationApp = createStackNavigator({
@@ -13,7 +13,8 @@ const NavigationApp = createStackNavigator({
   SignIn: { screen: SignIn },
   Register: { screen: Register },
   Home: { screen: Home },
-  Settings: { screen: Settings }
+  Settings: { screen: Settings },
+  Accel: { screen: Accel }
 })
 export default class App extends React.Component {
   constructor(props) {

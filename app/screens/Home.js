@@ -35,9 +35,7 @@ const styles = StyleSheet.create({
 });
 
 
-//main page s
+
 // accelerometer
-//edit button
-//settings screen
 //continue to push data when asleep (in slack)
 

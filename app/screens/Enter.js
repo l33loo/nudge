@@ -28,6 +28,9 @@ export default class Enter extends Component {
           onPress= { () => navigate('Register') }
           style = {{backgroundColor: 'transparent'}}
         />
+        <Button text = {<Text style={{textAlign: 'center'}}> View Accelerometer </Text>}
+          onPress= { () => navigate('Accel') }
+        />
     </View>
     )
   }
