@@ -11,5 +11,5 @@ export const Tabs = createBottomTabNavigator({
   },
   Register: {
     screen: Register
-  }
+  },
 });

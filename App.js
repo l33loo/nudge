@@ -3,12 +3,17 @@ import { StyleSheet, Text, View, Image, TextInput, ActivityIndicator } from 'rea
 import SignIn from './app/screens/SignIn';
 import Register from './app/screens/Register';
 import Enter from './app/screens/Enter';
+import Home from './app/screens/Home';
+import Settings from './app/screens/Settings';
+
 import { createStackNavigator } from 'react-navigation';
 
 const NavigationApp = createStackNavigator({
   Enter: { screen: Enter },
   SignIn: { screen: SignIn },
-  Register: { screen: Register }
+  Register: { screen: Register },
+  Home: { screen: Home },
+  Settings: { screen: Settings }
 })
 export default class App extends React.Component {
   constructor(props) {
@@ -35,8 +40,8 @@ this.setState({
         style={{
           flexDirection: 'column',
           alignItems: 'flex-start', 
-          width: 100, 
-          height: 100
+          width: 120, 
+          height: 120
         }}
         source={require('./app/images/nudgeLogo.png')}
         resizeMode="contain"

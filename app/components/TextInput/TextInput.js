@@ -12,7 +12,7 @@ export default class BlankTextInput extends Component {
     return (
       <TextInput
         style={this.props.style}
-        onChangeText={(text) => this.setState({text})}
+        // onChangeText={(text) => this.setState({text})}
         // value={this.props.text}
         placeholder={this.props.text}
       />
@@ -21,6 +21,5 @@ export default class BlankTextInput extends Component {
 }
 
 BlankTextInput.defaultProps = {
-  style: style.textinput,
-  text: "BlankInput"
+  style: style.textinput
 }
