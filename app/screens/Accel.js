@@ -3,17 +3,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Accelerometer } from 'expo';
 
 export default class AccelerometerSensor extends React.Component {
-  state = {
-    accelerometerData: {},
-  }
-
-  componentDidMount() {
-    this._toggle();
-  }
-
-  componentWillUnmount() {
-    this._unsubscribe();
-  }
+  constructor(props){
+    super(props);
+    this.state = {
+      accelerometerData: {},
+    };
+}
 
   _toggle = () => {
     if (this._subscription) {

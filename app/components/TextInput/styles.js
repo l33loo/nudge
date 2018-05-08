@@ -9,6 +9,6 @@ export default StyleSheet.create({
       // borderBottomWidth: 0.5,
       padding: 10,
       borderRadius: 2,
-      backgroundColor: 'white',
+      backgroundColor: 'white'
     }
 })

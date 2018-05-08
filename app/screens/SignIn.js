@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Button from '../../app/components/Button/Button';
 import TextInput from '../../app/components/TextInput/TextInput';
+import {colors} from "../../app/config/styles";
 
 
 export default class SignIn extends Component {
@@ -19,24 +20,36 @@ export default class SignIn extends Component {
     const { navigate } = this.props.navigation;
     return (
       <View style = {styles.container}>
-        <TextInput onChangeText={(email) => this.setState({email})}
-        value={this.state.email} text={"Email"}/>
-        <TextInput onChangeText={(password) => this.setState({password})}
-        value={this.state.password}text={"Password"} />
-    <Button text = {
-    <Text style={{color:'white', textAlign: 'center'}}> 
-      Sign in 
-      </Text>}
-      onPress= {
-        // handleSumbit 
-        () => navigate('Home')
-      }
-
-      />
-    <Text
-          onPress= { () => navigate('Register') }>Don't have an account? Register
+        <TextInput
+          onChangeText={(email) => this.setState({email})}
+          value={this.state.email} 
+          text={"Email"} 
+          keyboardType={'email-address'} 
+          keyboardAppearance={'dark'}
+        />
+        <TextInput 
+          onChangeText={(password) => this.setState({password})}
+          value={this.state.password} 
+          text={"Password"} 
+        />
+        <Button 
+          text = {
+            <Text 
+              style={{color: colors.textColor, textAlign: 'center'}}
+            > 
+              Sign in 
+            </Text>
+          }
+          onPress= {
+            // handleSumbit 
+            () => navigate('Home')
+          }
+        />
+        <Text
+          onPress= { () => navigate('Register') }>
+          Don't have an account? Register
         </Text>
-    </View>
+      </View>
     )
   }
 }
@@ -70,3 +83,7 @@ fetch('https://mywebsite.com/endpoint/', {
     secondParam: 'this.state.password',
   }),
 });
+
+//support continuous login
+//send token along with fetch
+//express jwt

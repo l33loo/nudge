@@ -1,31 +1,82 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import Button from '../../app/components/Button/Button';
 import TextInput from '../../app/components/TextInput/TextInput';
+import {colors} from "../../app/config/styles";
 
 
 export default class Home extends Component {
+  constructor(props){
+    super(props);
+    this.state ={ isLoading: true}
+  }
+
   static navigationOptions = {
     title: 'Home',
   };
+
+  componentDidMount(){
+    return fetch('https://facebook.github.io/react-native/movies.json')
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        this.setState({
+          isLoading: false,
+          dataSource: responseJson.movies,
+        }, function(){
+        });
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
+  }
+
   render() {
     const { navigate } = this.props.navigation;
-    return (
-      <View style={styles.container}>
-        <Text style={{fontSize:30}}>
+
+    if(this.state.isLoading){
+      return(
+        <View 
+          style={{flex: 1, padding: 20}}
+        >
+          <ActivityIndicator/>
+        </View>
+      )
+    }
+    return(
+      <View 
+        style={styles.container}>
+        <Text 
+          style={{fontSize:30}}>
           Contacts
         </Text>
-        <Text>
-          John John@john.com
-        </Text>
-        <Text>
-          Mary Mary@mary.com
-        </Text>
-        <Button text = {<Text style={{color:'white', textAlign: 'center'}}> Edit </Text>} onPress= { () => navigate('Settings') }/>
-    </View>
-    )
+        <FlatList
+          data={this.state.dataSource}
+          renderItem={({item}) => 
+            <Text>
+              {item.title}, 
+              {item.releaseYear}
+            </Text>}
+          keyExtractor={(item, index) => index.toString()}
+        />
+        <Button
+          text = {
+            <Text 
+              style={{
+                  color:colors.textColor, 
+                  textAlign: 'center'
+                }}
+            > 
+              Edit 
+            </Text>
+          } 
+          onPress= { () => navigate('Settings') }
+        />
+      </View>
+    );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,
@@ -33,9 +84,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   }
 });
-
-
-
-// accelerometer
-//continue to push data when asleep (in slack)
-
