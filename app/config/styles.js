@@ -1,3 +1,5 @@
 export const colors = {
-  red: "#FF0000"
+  PrimaryColor: "#505050",
+  secondaryColor: "#00add9",
+  textColor: "#202020"
 }

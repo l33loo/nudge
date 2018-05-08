@@ -5,14 +5,14 @@ import TextInput from '../../app/components/TextInput/TextInput';
 import {colors} from "../../app/config/styles";
 
 
-export default class Home extends Component {
+export default class Settings extends Component {
   constructor(props){
     super(props);
     this.state ={ isLoading: true}
   }
 
   static navigationOptions = {
-    title: 'Home',
+    title: 'Settings',
   };
 
   componentDidMount(){
@@ -36,38 +36,39 @@ export default class Home extends Component {
 
     if(this.state.isLoading){
       return(
-        <View 
-          style={{flex: 1, padding: 20}}
-        >
+        <View style={{flex: 1, padding: 20}}>
           <ActivityIndicator/>
         </View>
       )
     }
     return(
       <View 
-        style={styles.container}>
+        style={styles.container}
+      >
         <Text 
           style={{fontSize:30}}>
-          Contacts
+          Edit Contacts
         </Text>
         <FlatList
           data={this.state.dataSource}
           renderItem={({item}) => 
-            <Text>
-              {item.title}, 
-              {item.releaseYear}
-            </Text>}
+            <View>
+              <TextInput 
+                text={item.title}  
+              />
+              <TextInput 
+                text={item.releaseYear}  
+                />
+            </View>
+          }
           keyExtractor={(item, index) => index.toString()}
         />
         <Button
           text = {
             <Text 
-              style={{
-                  color:colors.textColor, 
-                  textAlign: 'center'
-                }}
-            > 
-              Edit 
+              style={{color:colors.textColor, textAlign: 'center'}}
+              > 
+              Save 
             </Text>
           } 
           onPress= { () => navigate('Settings') }
@@ -76,7 +77,6 @@ export default class Home extends Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,

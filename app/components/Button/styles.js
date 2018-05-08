@@ -3,7 +3,11 @@ import {colors} from "../../config/styles";
 
 export default StyleSheet.create({
     button: {
-        paddingVertical: 10,
-        backgroundColor: colors.red
+        padding: 10,
+        backgroundColor: colors.secondaryColor,
+        borderRadius: 2,
+        width: 220,
+        marginBottom: 10,
+        marginTop: 10
     }
 })
