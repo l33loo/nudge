@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import Button from '../../app/components/Button/Button';
 import TextInput from '../../app/components/TextInput/TextInput';
 import {colors} from "../../app/config/styles";
-
-
+import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
+ 
 export default class SignIn extends Component {
   constructor(props) {
     super(props);
@@ -20,6 +20,13 @@ export default class SignIn extends Component {
     const { navigate } = this.props.navigation;
     return (
       <View style = {styles.container}>
+
+       <GoogleSigninButton
+    style={{width: 48, height: 48}}
+    size={GoogleSigninButton.Size.Icon}
+    color={GoogleSigninButton.Color.Dark}
+    onPress={this._signIn.bind(this)}/>
+
         <TextInput
           onChangeText={(email) => this.setState({email})}
           value={this.state.email} 
@@ -83,6 +90,14 @@ fetch('https://mywebsite.com/endpoint/', {
     secondParam: 'this.state.password',
   }),
 });
+
+// GoogleSignin.configure({
+//   iosClientId: 
+// })
+// .then(() => {
+//   // you can now call currentUserAsync()
+// });
+
 
 //support continuous login
 //send token along with fetch

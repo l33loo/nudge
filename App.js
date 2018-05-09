@@ -25,6 +25,9 @@ export default class App extends React.Component {
       loadTime: true,
       accelerometerData: {},
       movement: false,
+      timeLastActivity: 0,
+      notificationsEnabled: true,
+      loggedIn: true,
     };
     
     this.getInQueue = this.getInQueue.bind(this);
@@ -33,19 +36,29 @@ export default class App extends React.Component {
   }
   componentDidMount() {
     this._subscribe();
-    // this._toggle();
+    if(this.state.loggedIn && this.state.notificationsEnabled) {
+      console.log("IF STATEMENT")
+      setInterval(() => {
+        if (Date.now() - this.state.timeLastActivity < 10000 ) {
+          
+          // this.state.movement = false;
+          this.sendPing()
+        }
+      }, 5000);
+    }
   }
 
   componentWillUnmount() {
     this.state.movement = false;
     this._unsubscribe();
+    clearInterval(this._interval);
   }
 
   getInQueue() {
     const { y } = this.state.accelerometerData;
     if (y > 0.7) {
-      this.state.movement = true;
-      this.sendPing();
+      // this.state.movement = true;
+      this.state.timeLastActivity = Date.now();
     }
   }
 
