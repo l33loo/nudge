@@ -4,12 +4,52 @@ import Button from '../../app/components/Button/Button';
 import TextInput from '../../app/components/TextInput/TextInput';
 import style from "../../app/config/styles";
 import {colors} from "../../app/config/styles";
-
+import Expo from 'expo';
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 export default class Enter extends Component {
   static navigationOptions = {
     title: 'Profile',
-  };
+  }
+  
+
+  signIn() {
+   this.signInWithGoogleAsync()
+    .then(accessToken => {
+      this.signInWithApi(accessToken)
+    })
+    .then(() => this.props.navigation.navigate('Home'))
+  }
+
+  async signInWithApi(accessToken) {
+    fetch('https://nudge-server.herokuapp.com/contacts', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json, text/plain */*',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            firstParam: accessToken
+          }),
+        });
+  }
+        
+  async signInWithGoogleAsync() {
+    try {
+      const result = await Expo.Google.logInAsync({
+        // androidClientId: YOUR_CLIENT_ID_HERE,
+        iosClientId: '241417537066-pfo2ii59t8aqhihg1ikdqq77hndokfmd.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
+      });
+      if (result.type === 'success') {
+        return result.accessToken;
+      } else {
+        return {cancelled: true};
+      }
+    } catch(e) {
+      return {error: true};
+    }
+  }
 
   render() {
     const { navigate } = this.props.navigation;
@@ -30,10 +70,10 @@ export default class Enter extends Component {
             <Text 
               style={{color:colors.textColor, textAlign: 'center'}}
             > 
-              Sign in to your account 
+              Sign in with Google
             </Text>
           }
-          onPress= { () => navigate('SignIn') }
+          onPress={() => this.signIn()}
         />
         <Button 
           text = {
@@ -68,3 +108,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   }
 });
+

@@ -16,13 +16,13 @@ export default class Home extends Component {
   };
 
   componentDidMount(){
-    return fetch('https://facebook.github.io/react-native/movies.json')
+    return fetch('https://nudge-server.herokuapp.com/contacts')
       .then((response) => response.json())
       .then((responseJson) => {
 
         this.setState({
           isLoading: false,
-          dataSource: responseJson.movies,
+          dataSource: responseJson.users,
         }, function(){
         });
       })
@@ -53,10 +53,15 @@ export default class Home extends Component {
         <FlatList
           data={this.state.dataSource}
           renderItem={({item}) => 
+          <View>
             <Text>
-              {item.title}, 
-              {item.releaseYear}
-            </Text>}
+             {item.nickname}
+            </Text>
+            <Text>
+            {item.email}
+            </Text>
+            </View>
+          }
           keyExtractor={(item, index) => index.toString()}
         />
         <Button

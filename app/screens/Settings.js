@@ -16,13 +16,13 @@ export default class Settings extends Component {
   };
 
   componentDidMount(){
-    return fetch('https://facebook.github.io/react-native/movies.json')
+    return fetch('https://nudge-server.herokuapp.com/contacts')
       .then((response) => response.json())
       .then((responseJson) => {
 
         this.setState({
           isLoading: false,
-          dataSource: responseJson.movies,
+          dataSource: responseJson.users,
         }, function(){
         });
       })
@@ -54,10 +54,10 @@ export default class Settings extends Component {
           renderItem={({item}) => 
             <View>
               <TextInput 
-                text={item.title}  
+                text={item.nickname}  
               />
               <TextInput 
-                text={item.releaseYear}  
+                text={item.email}  
                 />
             </View>
           }
