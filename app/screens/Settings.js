@@ -41,6 +41,7 @@ export default class Settings extends Component {
         </View>
       )
     }
+    
     return(
       <View 
         style={styles.container}

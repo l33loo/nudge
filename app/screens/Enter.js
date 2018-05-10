@@ -15,23 +15,30 @@ export default class Enter extends Component {
 
   signIn() {
    this.signInWithGoogleAsync()
-    .then(accessToken => {
-      this.signInWithApi(accessToken)
+    .then(idToken => {
+      this.signInWithApi(idToken)
     })
     .then(() => this.props.navigation.navigate('Home'))
   }
 
-  async signInWithApi(accessToken) {
+  async signInWithApi(idToken) {
+    console.log(idToken)
+    const data = JSON.stringify({firstParam: idToken})
     fetch('https://nudge-server.herokuapp.com/contacts', {
           method: 'POST',
           headers: {
             'Accept': 'application/json, text/plain */*',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            firstParam: accessToken
-          }),
-        });
+          body: data
+        })
+        .then((response) => {
+          console.log(response.status)
+          console.log(data)
+        })
+        .catch((error) => {
+          throw error;
+        })
   }
         
   async signInWithGoogleAsync() {
@@ -42,7 +49,7 @@ export default class Enter extends Component {
         scopes: ['profile', 'email'],
       });
       if (result.type === 'success') {
-        return result.accessToken;
+        return result.idToken;
       } else {
         return {cancelled: true};
       }
