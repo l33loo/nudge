@@ -8,8 +8,16 @@ import Expo from 'expo';
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 export default class Enter extends Component {
+  constructor(props){
+    super(props);
+      this.state = {
+        loggedIn: false,
+        idToken: null
+      }
+  }
   static navigationOptions = {
     title: 'Profile',
+   
   }
   
 
@@ -17,12 +25,14 @@ export default class Enter extends Component {
    this.signInWithGoogleAsync()
     .then(idToken => {
       this.signInWithApi(idToken)
+      this.state.idToken = idToken
+      console.log(this.state.idToken)
     })
     .then(() => this.props.navigation.navigate('Home'))
   }
 
+
   async signInWithApi(idToken) {
-    console.log(idToken)
     const data = JSON.stringify({firstParam: idToken})
     fetch('https://nudge-server.herokuapp.com/contacts', {
           method: 'POST',
@@ -34,7 +44,6 @@ export default class Enter extends Component {
         })
         .then((response) => {
           console.log(response.status)
-          console.log(data)
         })
         .catch((error) => {
           throw error;
