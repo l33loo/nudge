@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, StyleSheet, Text, View, Image } from 'react-native';
+import { PropTypes, AsyncStorage, StyleSheet, Text, View, Image } from 'react-native';
 import Button from '../../app/components/Button/Button';
 import TextInput from '../../app/components/TextInput/TextInput';
 import style from "../../app/config/styles";
@@ -8,13 +8,6 @@ import Expo from 'expo';
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 export default class Enter extends Component {
-  constructor(props){
-    super(props);
-      this.state = {
-        loggedIn: false,
-        id: ''
-      }
-  }
   static navigationOptions = {
     title: 'Profile',
    
@@ -26,9 +19,12 @@ export default class Enter extends Component {
     .then(async idToken => {
        const id = await this.signInWithApi(idToken)
       this.setIdFromServer(id)
-
+      this.props.screenProps.changeState(id)
     })
-    .then(() => this.props.navigation.navigate('Home'))
+    // .then(() => this.props.navigation.navigate('Home'))
+    .catch((error) => {
+      throw error;
+    })
   }
 
 
@@ -74,8 +70,6 @@ export default class Enter extends Component {
   async setIdFromServer(id) {
     try {
       await AsyncStorage.setItem('id', id);
-      this.setState({'id': id})
-       console.log('ID', id)
     } catch (error) {
       console.log(error)
       throw error;
@@ -96,12 +90,14 @@ export default class Enter extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
+    console.log(this.props)
     return (
       <View style={styles.container}>
         <Text 
           style={{fontSize: 28, marginBottom: 10}}
         >
           Sign in to Continue
+          {this.props.screenProps.id}
         </Text>
         <Text 
           style={{fontSize: 16, textAlign: 'center',marginBottom: 15}}

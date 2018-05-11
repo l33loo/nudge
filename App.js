@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, StyleSheet, Text, View, Image, TextInput, ActivityIndicator } from 'react-native';
+import { PropTypes, Child, StyleSheet, Text, View, Image, TextInput, ActivityIndicator } from 'react-native';
 import SignIn from './app/screens/SignIn';
 import Register from './app/screens/Register';
 import Enter from './app/screens/Enter';
@@ -9,14 +9,6 @@ import Accel from './app/screens/Accel';
 import { createStackNavigator } from 'react-navigation';
 import { Accelerometer } from 'expo';
 
-const NavigationApp = createStackNavigator({
-  Enter: { screen: Enter },
-  SignIn: { screen: SignIn },
-  Register: { screen: Register },
-  Home: { screen: Home },
-  Settings: { screen: Settings },
-  Accel: { screen: Accel }
-})
 
 export default class App extends React.Component {
   constructor(props) {
@@ -33,12 +25,12 @@ export default class App extends React.Component {
     
     this.getInQueue = this.getInQueue.bind(this);
     this.sendPing = this.sendPing.bind(this);
-    this.changeState = this.changeState.bind(this);
-
   }
 
-  changeState(data) {
-    this.setState({ data });
+  changeState = (id) => {
+    this.setState({
+       'id': id
+    });
   } 
 
   componentDidMount() {
@@ -72,7 +64,6 @@ export default class App extends React.Component {
 
   sendPing = () => {
     fetch("https://nudge-server.herokuapp.com/");
-    console.log('hi I am pinging');
   }
 
   _subscribe = () => {
@@ -98,10 +89,20 @@ export default class App extends React.Component {
       3000
     )
   }
+
   render() {
+    const NavigationApp = createStackNavigator({
+      Enter: { screen: Enter },
+      SignIn: { screen: SignIn },
+      Register: { screen: Register },
+      Home: { screen: Home },
+      Settings: { screen: Settings },
+      Accel: { screen: Accel }
+    })
+
     return (
+      
       <View style={styles.container}>
-      {/* <App changeState = {this.changeState}/> */}
         {
           this.state.loadTime ?
             <View style={loadStyle.container}>
@@ -128,11 +129,20 @@ export default class App extends React.Component {
                   alignItems: 'flex-start', 
                   width: 100, 
                   height: 100
+                }} 
+                changeState = 'hi'
+                screenProps={{
+                  id: this.state.id,
+                  changeState: this.changeState
                 }}
-              />
+              >
+              </NavigationApp>
+              
             </View>
         }
+         
       </View>
+      
     );
   }
 }

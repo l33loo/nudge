@@ -49,6 +49,7 @@ export default class Home extends Component {
         <Text 
           style={{fontSize:30}}>
           Contacts
+          {this.props.userId}
         </Text>
         <FlatList
           data={this.state.dataSource}
