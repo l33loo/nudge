@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TextInput, ActivityIndicator } from 'react-native';
+import { AsyncStorage, StyleSheet, Text, View, Image, TextInput, ActivityIndicator } from 'react-native';
 import SignIn from './app/screens/SignIn';
 import Register from './app/screens/Register';
 import Enter from './app/screens/Enter';
@@ -28,12 +28,19 @@ export default class App extends React.Component {
       timeLastActivity: 0,
       notificationsEnabled: true,
       loggedIn: true,
+      id: ''
     };
     
     this.getInQueue = this.getInQueue.bind(this);
     this.sendPing = this.sendPing.bind(this);
+    this.changeState = this.changeState.bind(this);
 
   }
+
+  changeState(data) {
+    this.setState({ data });
+  } 
+
   componentDidMount() {
     this._subscribe();
     if(this.state.loggedIn && this.state.notificationsEnabled) {
@@ -47,6 +54,7 @@ export default class App extends React.Component {
       }, 5000);
     }
   }
+
 
   componentWillUnmount() {
     this.state.movement = false;
@@ -93,6 +101,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+      {/* <App changeState = {this.changeState}/> */}
         {
           this.state.loadTime ?
             <View style={loadStyle.container}>

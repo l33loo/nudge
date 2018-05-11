@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { AsyncStorage, StyleSheet, Text, View, Image } from 'react-native';
 import Button from '../../app/components/Button/Button';
 import TextInput from '../../app/components/TextInput/TextInput';
 import style from "../../app/config/styles";
@@ -12,7 +12,7 @@ export default class Enter extends Component {
     super(props);
       this.state = {
         loggedIn: false,
-        idToken: null
+        id: ''
       }
   }
   static navigationOptions = {
@@ -21,12 +21,12 @@ export default class Enter extends Component {
   }
   
 
-  signIn() {
+  async signIn() {
    this.signInWithGoogleAsync()
-    .then(idToken => {
-      this.signInWithApi(idToken)
-      this.state.idToken = idToken
-      console.log(this.state.idToken)
+    .then(async idToken => {
+       const id = await this.signInWithApi(idToken)
+      this.setIdFromServer(id)
+
     })
     .then(() => this.props.navigation.navigate('Home'))
   }
@@ -34,7 +34,7 @@ export default class Enter extends Component {
 
   async signInWithApi(idToken) {
     const data = JSON.stringify({firstParam: idToken})
-    fetch('https://nudge-server.herokuapp.com/contacts', {
+    return fetch('https://nudge-server.herokuapp.com/login', {
           method: 'POST',
           headers: {
             'Accept': 'application/json, text/plain */*',
@@ -42,11 +42,15 @@ export default class Enter extends Component {
           },
           body: data
         })
-        .then((response) => {
-          console.log(response.status)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          console.log('response json: ', responseJson)
+          return responseJson
         })
         .catch((error) => {
-          throw error;
+          console.log('ERROR:', error)
+          // throw error;
+          
         })
   }
         
@@ -64,6 +68,29 @@ export default class Enter extends Component {
       }
     } catch(e) {
       return {error: true};
+    }
+  }
+
+  async setIdFromServer(id) {
+    try {
+      await AsyncStorage.setItem('id', id);
+      this.setState({'id': id})
+       console.log('ID', id)
+    } catch (error) {
+      console.log(error)
+      throw error;
+    }
+  }
+
+  async getIdFromAsync() {
+    try {
+      const value = await AsyncStorage.getItem('@id:key');
+      if (value !== null){
+        // We have data!!
+        console.log(value);
+      }
+    } catch (error) {
+      // Error retrieving data
     }
   }
 
