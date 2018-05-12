@@ -49,7 +49,6 @@ export default class Home extends Component {
         <Text 
           style={{fontSize:30}}>
           Contacts
-          {this.props.screenProps.id}
         </Text>
         <FlatList
           data={this.state.dataSource}
@@ -73,10 +72,41 @@ export default class Home extends Component {
                   textAlign: 'center'
                 }}
             > 
-              Edit 
+              Add a New Contact 
+            </Text>
+          } 
+          onPress= { () => navigate('Add') }
+        />
+        <Button
+          text = {
+            <Text 
+              style={{
+                  color:colors.textColor, 
+                  textAlign: 'center'
+                }}
+            > 
+              Edit a Contact
             </Text>
           } 
           onPress= { () => navigate('Settings') }
+        />
+        <Button
+          text = {
+            <Text 
+              style={{
+                  color:colors.textColor, 
+                  textAlign: 'center'
+                }}
+            > 
+              Logout
+            </Text>
+          } 
+          
+          onPress= { () => {
+            this.props.screenProps.changeState() 
+            navigate('Enter')
+            }
+          }
         />
       </View>
     );

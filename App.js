@@ -1,11 +1,10 @@
 import React from 'react';
 import { PropTypes, Child, StyleSheet, Text, View, Image, TextInput, ActivityIndicator } from 'react-native';
-import SignIn from './app/screens/SignIn';
-import Register from './app/screens/Register';
 import Enter from './app/screens/Enter';
 import Home from './app/screens/Home';
 import Settings from './app/screens/Settings';
 import Accel from './app/screens/Accel';
+import Add from './app/screens/Add';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import { Accelerometer } from 'expo';
 
@@ -28,28 +27,31 @@ export default class App extends React.Component {
   }
 
   changeState = (id) => {
-    // if(this.isMounted){
       this.setState({
         'id': id
      }, () => console.log(this.state));
-  // }
   } 
 
-  loggedIn() {
+  loggedIn = () => {
+    console.log('LOGGED IN')
     if(!this.state.id === ''){
       this.setState({
         loggedIn: true
       })
+      console.log('LOGGED IN')
     }
   }
-  // setState(
-  //   { name: "Michael" },
-  //   () => console.log(this.state)
-  // );
 
-  // const cancelablePromise = makeCancelable(
-  //   new Promise(r => component.setState({...}}))
-  // );
+  //************************modify to log out properly ******************
+  // ***************** logged in is not setting to true, NOT CALLING FUNCTION***********
+  loggedOut = () => {
+    console.log('LOGGED OUT')
+    if(this.state.id === ''){
+      this.setState({
+        loggedIn: false
+      })
+    }
+  }
 
 
   componentDidMount() {
@@ -58,7 +60,6 @@ export default class App extends React.Component {
     this.changeState();
     this._subscribe();
     if(this.state.loggedIn && this.state.notificationsEnabled) {
-      console.log("IF STATEMENT")
       setInterval(() => {
         if (Date.now() - this.state.timeLastActivity < 10000 ) {
           this.sendPing()
@@ -70,13 +71,13 @@ export default class App extends React.Component {
   getInQueue() {
     const { y } = this.state.accelerometerData;
     if (y > 0.7) {
-      // this.state.movement = true;
       this.state.timeLastActivity = Date.now();
     }
   }
 
   sendPing = () => {
     fetch("https://nudge-server.herokuapp.com/");
+    console.log('ping!')
   }
 
   _subscribe = () => {
@@ -104,13 +105,8 @@ export default class App extends React.Component {
     )
   }
 
-
-
-
-
   render() {
     return (
-      
       <View style={styles.container}>
         {
           this.state.loadTime ?
@@ -141,11 +137,12 @@ export default class App extends React.Component {
                 }} 
                 screenProps={{
                   id: this.state.id,
-                  changeState: this.changeState
+                  changeState: this.changeState,
+                  loggedIn: this.loggedIn,
+                  loggedOut: this.loggedOut
                 }}
               >
-              </NavigationApp>
-              
+              </NavigationApp> 
             </View>
         }
          
@@ -155,11 +152,9 @@ export default class App extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('Component Unmount')
     this.state.movement = false;
     this._unsubscribe();
     clearInterval(this._interval);
-    // this.isMounted = false;
   }
 }
 
@@ -175,11 +170,10 @@ const NavigationSwitch = createSwitchNavigator(
 
 const NavigationApp = createStackNavigator({
   Enter: NavigationSwitch,
-  SignIn: { screen: SignIn },
-  Register: { screen: Register },
   Home: { screen: Home },
   Settings: { screen: Settings },
-  Accel: { screen: Accel }
+  Accel: { screen: Accel },
+  Add: { screen: Add }
 })
 
 const styles = StyleSheet.create({

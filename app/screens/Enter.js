@@ -15,12 +15,12 @@ export default class Enter extends Component {
   
 
  async signIn() {
-  //  e.preventDefault(e);
    this.signInWithGoogleAsync()
     .then(async idToken => {
       const id = await this.signInWithApi(idToken)
       this.setIdFromServer(id)
       this.props.screenProps.changeState(id)
+      this.props.screenProps.loggedIn()
       console.log('Sign In')
     })
     .catch((error) => {
@@ -78,7 +78,6 @@ export default class Enter extends Component {
     try {
       await AsyncStorage.setItem('id', id);
     } catch (error) {
-      console.log(error)
       throw error;
     }
   }
@@ -91,7 +90,7 @@ export default class Enter extends Component {
         console.log(value);
       }
     } catch (error) {
-      // Error retrieving data
+      throw error;
     }
   }
 
@@ -119,17 +118,6 @@ export default class Enter extends Component {
             </Text>
           }
           onPress={() => this.signIn()}
-        />
-        <Button 
-          text = {
-            <Text 
-              style={{textAlign: 'center'}}
-             > 
-              Sign up for Nudge 
-            </Text>
-          }
-          onPress= { () => navigate('Register') }
-          style = {{backgroundColor: 'transparent'}}
         />
         <Button 
           text = {

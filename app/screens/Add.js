@@ -5,14 +5,14 @@ import TextInput from '../../app/components/TextInput/TextInput';
 import {colors} from "../../app/config/styles";
 
 
-export default class Settings extends Component {
+export default class Add extends Component {
   constructor(props){
     super(props);
     this.state ={ isLoading: true}
   }
 
   static navigationOptions = {
-    title: 'Edit Contacts',
+    title: 'Add Contacts',
   };
 
   componentDidMount(){
@@ -47,17 +47,17 @@ export default class Settings extends Component {
       >
         <Text 
           style={{fontSize:30}}>
-          Edit Contacts
+          New Contact
         </Text>
         <FlatList
           data={this.state.dataSource}
           renderItem={({item}) => 
             <View>
               <TextInput 
-                text={item.nickname}  
+                text= {'Name'}  
               />
-              <TextInput 
-                text={item.email}  
+              <TextInput
+                text= {'Email'}  
                 />
             </View>
           }
