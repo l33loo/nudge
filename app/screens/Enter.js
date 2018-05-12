@@ -14,19 +14,26 @@ export default class Enter extends Component {
   }
   
 
-  async signIn() {
+ async signIn() {
+  //  e.preventDefault(e);
    this.signInWithGoogleAsync()
     .then(async idToken => {
-       const id = await this.signInWithApi(idToken)
+      const id = await this.signInWithApi(idToken)
       this.setIdFromServer(id)
       this.props.screenProps.changeState(id)
+      console.log('Sign In')
     })
-    // .then(() => this.props.navigation.navigate('Home'))
     .catch((error) => {
+      console.log(error)
+      // throw error;
+    })
+    // .then(() => this.props.screenProps.changeState(id))
+    .then(() => this.props.navigation.navigate('Home'))
+    .catch((error) => {
+    console.log('ERROR:', error)
       throw error;
     })
   }
-
 
   async signInWithApi(idToken) {
     const data = JSON.stringify({firstParam: idToken})
@@ -90,7 +97,6 @@ export default class Enter extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    console.log(this.props)
     return (
       <View style={styles.container}>
         <Text 

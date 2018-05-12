@@ -6,7 +6,7 @@ import Enter from './app/screens/Enter';
 import Home from './app/screens/Home';
 import Settings from './app/screens/Settings';
 import Accel from './app/screens/Accel';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import { Accelerometer } from 'expo';
 
 
@@ -19,7 +19,7 @@ export default class App extends React.Component {
       movement: false,
       timeLastActivity: 0,
       notificationsEnabled: true,
-      loggedIn: true,
+      loggedIn: false,
       id: ''
     };
     
@@ -28,30 +28,43 @@ export default class App extends React.Component {
   }
 
   changeState = (id) => {
-    this.setState({
-       'id': id
-    });
+    // if(this.isMounted){
+      this.setState({
+        'id': id
+     }, () => console.log(this.state));
+  // }
   } 
 
+  loggedIn() {
+    if(!this.state.id === ''){
+      this.setState({
+        loggedIn: true
+      })
+    }
+  }
+  // setState(
+  //   { name: "Michael" },
+  //   () => console.log(this.state)
+  // );
+
+  // const cancelablePromise = makeCancelable(
+  //   new Promise(r => component.setState({...}}))
+  // );
+
+
   componentDidMount() {
+    console.log('Component Mounted')
+    this.isMounted = true;
+    this.changeState();
     this._subscribe();
     if(this.state.loggedIn && this.state.notificationsEnabled) {
       console.log("IF STATEMENT")
       setInterval(() => {
         if (Date.now() - this.state.timeLastActivity < 10000 ) {
-          
-          // this.state.movement = false;
           this.sendPing()
         }
       }, 5000);
-    }
-  }
-
-
-  componentWillUnmount() {
-    this.state.movement = false;
-    this._unsubscribe();
-    clearInterval(this._interval);
+    } 
   }
 
   getInQueue() {
@@ -80,6 +93,7 @@ export default class App extends React.Component {
 
   componentWillMount()
   {
+    console.log('Will Mount')
     setTimeout(()=>
       {
         this.setState({
@@ -90,16 +104,11 @@ export default class App extends React.Component {
     )
   }
 
-  render() {
-    const NavigationApp = createStackNavigator({
-      Enter: { screen: Enter },
-      SignIn: { screen: SignIn },
-      Register: { screen: Register },
-      Home: { screen: Home },
-      Settings: { screen: Settings },
-      Accel: { screen: Accel }
-    })
 
+
+
+
+  render() {
     return (
       
       <View style={styles.container}>
@@ -130,7 +139,6 @@ export default class App extends React.Component {
                   width: 100, 
                   height: 100
                 }} 
-                changeState = 'hi'
                 screenProps={{
                   id: this.state.id,
                   changeState: this.changeState
@@ -145,7 +153,35 @@ export default class App extends React.Component {
       
     );
   }
+
+  componentWillUnmount() {
+    console.log('Component Unmount')
+    this.state.movement = false;
+    this._unsubscribe();
+    clearInterval(this._interval);
+    // this.isMounted = false;
+  }
 }
+
+const NavigationSwitch = createSwitchNavigator(
+  {
+  Enter: {screen: Enter},
+  Home: {screen: Home}
+},
+{
+   initialRouteName: this.loggedIn ? "Home" : "Enter"
+}
+)
+
+const NavigationApp = createStackNavigator({
+  Enter: NavigationSwitch,
+  SignIn: { screen: SignIn },
+  Register: { screen: Register },
+  Home: { screen: Home },
+  Settings: { screen: Settings },
+  Accel: { screen: Accel }
+})
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -16,7 +16,7 @@ export default class Home extends Component {
   };
 
   componentDidMount(){
-    return fetch('https://nudge-server.herokuapp.com/contacts/1')
+    return fetch(`https://nudge-server.herokuapp.com/contacts/${this.props.screenProps.id}`)
       .then((response) => response.json())
       .then((responseJson) => {
 
@@ -49,7 +49,7 @@ export default class Home extends Component {
         <Text 
           style={{fontSize:30}}>
           Contacts
-          {this.props.userId}
+          {this.props.screenProps.id}
         </Text>
         <FlatList
           data={this.state.dataSource}

@@ -16,21 +16,20 @@ export default class Settings extends Component {
   };
 
   componentDidMount(){
-    return fetch('https://nudge-server.herokuapp.com/contacts/1')
+    return fetch(`https://nudge-server.herokuapp.com/contacts/2`)
       .then((response) => response.json())
       .then((responseJson) => {
 
         this.setState({
           isLoading: false,
           dataSource: responseJson.users,
-        }, function(){
         });
       })
       .catch((error) =>{
         console.error(error);
       });
   }
-
+  
   render() {
     const { navigate } = this.props.navigation;
 
