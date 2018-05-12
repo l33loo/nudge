@@ -8,15 +8,20 @@ import {colors} from "../../app/config/styles";
 export default class Add extends Component {
   constructor(props){
     super(props);
-    this.state ={ isLoading: true}
+    this.state ={ 
+      isLoading: true,
+      nickname: "",
+      email: ""
+    }
   }
 
   static navigationOptions = {
     title: 'Add Contacts',
   };
 
+
   componentDidMount(){
-    return fetch(`https://nudge-server.herokuapp.com/contacts/2`)
+    return fetch(`https://nudge-server.herokuapp.com/contacts/${this.props.screenProps.id}`)
       .then((response) => response.json())
       .then((responseJson) => {
 
@@ -30,9 +35,37 @@ export default class Add extends Component {
       });
   }
   
+  handleInput = (event) => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+  onSubmit(event){
+    return fetch(`https://nudge-server.herokuapp.com/insert/${this.props.screenProps.id}`, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json, text/plain */*',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.state)
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          return responseJson
+        })
+        .catch((error) => {
+          throw error;
+        })
+        .then(response => this.props.navigation.navigate('Home'));
+  }
+  
   render() {
     const { navigate } = this.props.navigation;
-
     if(this.state.isLoading){
       return(
         <View style={{flex: 1, padding: 20}}>
@@ -40,7 +73,6 @@ export default class Add extends Component {
         </View>
       )
     }
-    
     return(
       <View 
         style={styles.container}
@@ -54,10 +86,16 @@ export default class Add extends Component {
           renderItem={({item}) => 
             <View>
               <TextInput 
+                name= {'nickname'}
                 text= {'Name'}  
+                onChangeText={this.handleInput}
+                value={this.state.nickname}
               />
               <TextInput
+                name= {'email'}
                 text= {'Email'}  
+                onChangeText={this.handleInput}
+                value={this.state.email}
                 />
             </View>
           }
@@ -71,7 +109,11 @@ export default class Add extends Component {
               Save 
             </Text>
           } 
-          onPress= { () => navigate('Settings') }
+          onPress= { () => {
+              this.onSubmit()
+              navigate('Home') 
+           }
+          }
         />
       </View>
     );

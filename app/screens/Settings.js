@@ -16,7 +16,7 @@ export default class Settings extends Component {
   };
 
   componentDidMount(){
-    return fetch(`https://nudge-server.herokuapp.com/contacts/2`)
+    return fetch(`https://nudge-server.herokuapp.com/contacts/${this.props.screenProps.id}`)
       .then((response) => response.json())
       .then((responseJson) => {
 
