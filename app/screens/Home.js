@@ -8,7 +8,9 @@ import {colors} from "../../app/config/styles";
 export default class Home extends Component {
   constructor(props){
     super(props);
-    this.state ={ isLoading: true}
+    this.state = { 
+      isLoading: true
+    }
   }
 
   static navigationOptions = {

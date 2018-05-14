@@ -19,49 +19,29 @@ export default class Add extends Component {
     title: 'Add Contacts',
   };
 
-
   componentDidMount(){
-    return fetch(`https://nudge-server.herokuapp.com/contacts/${this.props.screenProps.id}`)
-      .then((response) => response.json())
-      .then((responseJson) => {
-
         this.setState({
-          isLoading: false,
-          dataSource: responseJson.users,
-        });
-      })
-      .catch((error) =>{
-        console.error(error);
-      });
+          isLoading: false
+        })
   }
   
-  handleInput = (event) => {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
-  onSubmit(event){
+  onSubmit = () => {
+    console.log('on submit')
     return fetch(`https://nudge-server.herokuapp.com/insert/${this.props.screenProps.id}`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json, text/plain */*',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(this.state)
+          body: JSON.stringify(this.state)    
         })
-        .then((response) => response.json())
+        .then((response) => response)
         .then((responseJson) => {
           return responseJson
         })
         .catch((error) => {
           throw error;
         })
-        .then(response => this.props.navigation.navigate('Home'));
   }
   
   render() {
@@ -81,26 +61,17 @@ export default class Add extends Component {
           style={{fontSize:30}}>
           New Contact
         </Text>
-        <FlatList
-          data={this.state.dataSource}
-          renderItem={({item}) => 
             <View>
               <TextInput 
-                name= {'nickname'}
-                text= {'Name'}  
-                onChangeText={this.handleInput}
+                ref= {(el) => { this.nickname = el; }} 
+                onChangeText={(nickname) => this.setState({nickname}, function () {console.log('Nickname updated')})}
                 value={this.state.nickname}
               />
-              <TextInput
-                name= {'email'}
-                text= {'Email'}  
-                onChangeText={this.handleInput}
+              <TextInput 
                 value={this.state.email}
+                onChangeText={(text) => this.setState({email: text})}   
                 />
             </View>
-          }
-          keyExtractor={(item, index) => index.toString()}
-        />
         <Button
           text = {
             <Text 
@@ -111,7 +82,7 @@ export default class Add extends Component {
           } 
           onPress= { () => {
               this.onSubmit()
-              navigate('Home') 
+              navigate('Home')
            }
           }
         />
