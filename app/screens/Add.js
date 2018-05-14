@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { FlatList, ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { FlatList, ActivityIndicator, StyleSheet, Text, View, TextInput } from 'react-native';
 import Button from '../../app/components/Button/Button';
-import TextInput from '../../app/components/TextInput/TextInput';
 import {colors} from "../../app/config/styles";
 
 
@@ -11,8 +10,16 @@ export default class Add extends Component {
     this.state ={ 
       isLoading: true,
       nickname: "",
-      email: ""
+      email: "",
+      uniqueValue: 1
     }
+  
+  }
+
+  forceRemount = () => {
+    this.setState(({ uniqueValue }) => ({
+      uniqueValue: uniqueValue + 1
+    }))
   }
 
   static navigationOptions = {
@@ -37,7 +44,9 @@ export default class Add extends Component {
         })
         .then((response) => response)
         .then((responseJson) => {
+          console.log(responseJson)
           return responseJson
+
         })
         .catch((error) => {
           throw error;
@@ -63,13 +72,18 @@ export default class Add extends Component {
         </Text>
             <View>
               <TextInput 
-                ref= {(el) => { this.nickname = el; }} 
-                onChangeText={(nickname) => this.setState({nickname}, function () {console.log('Nickname updated')})}
+                onChangeText={(nickname) => this.setState({nickname})}
                 value={this.state.nickname}
+                placeholder={'Name'}
+                style={{backgroundColor: 'white', alignSelf: 'stretch', padding: 10,
+                borderRadius: 2}}
               />
-              <TextInput 
+              <TextInput
                 value={this.state.email}
-                onChangeText={(text) => this.setState({email: text})}   
+                placeholder={'Email'}
+                onChangeText={(text) => this.setState({email: text})}  
+                style={{backgroundColor: 'white', alignSelf: 'stretch', padding: 10,
+                borderRadius: 2, width: 200}} 
                 />
             </View>
         <Button
@@ -82,7 +96,10 @@ export default class Add extends Component {
           } 
           onPress= { () => {
               this.onSubmit()
+              this.forceRemount()
+              console.log('force remount')
               navigate('Home')
+              
            }
           }
         />
