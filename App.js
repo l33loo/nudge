@@ -17,14 +17,28 @@ export default class App extends React.Component {
       accelerometerData: {},
       movement: false,
       timeLastActivity: 0,
-      notificationsEnabled: true,
       loggedIn: false,
-      id: ''
+      id: '',
+      contacts: []
     };
     
     this.getInQueue = this.getInQueue.bind(this);
     this.sendPing = this.sendPing.bind(this);
   }
+
+  getContacts = () => {
+    return fetch(`https://nudge-server.herokuapp.com/contacts/${this.state.id}`)
+    .then((response) => response.json())
+    .then((responseJSON) => {
+      this.setState({
+        dataSource: responseJSON.users
+      })
+    })
+    .catch((error) => {
+      throw error;
+    })
+  }
+
 
   changeState = (id) => {
       this.setState({
@@ -136,7 +150,9 @@ export default class App extends React.Component {
                   id: this.state.id,
                   changeState: this.changeState,
                   loggedIn: this.loggedIn,
-                  loggedOut: this.loggedOut
+                  loggedOut: this.loggedOut,
+                  getContacts: this.getContacts,
+                  contacts: this.state.contacts
                 }}
               >
               </NavigationApp> 

@@ -10,17 +10,10 @@ export default class Add extends Component {
     this.state ={ 
       isLoading: true,
       nickname: "",
-      email: "",
-      uniqueValue: 1
+      email: ""
     }
+  }
   
-  }
-  forceRemount = () => {
-    this.setState(({ uniqueValue }) => ({
-      uniqueValue: uniqueValue + 1
-    }))
-  }
-
 
   static navigationOptions = {
     title: 'Add Contacts',
@@ -35,21 +28,20 @@ export default class Add extends Component {
   
   
   onSubmit = () => {
-    console.log('on submit')
+    const contact = {nickname: this.state.nickname, email: this.state.email}
     return fetch(`https://nudge-server.herokuapp.com/insert/${this.props.screenProps.id}`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json, text/plain */*',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(this.state)    
-        })
+          body: JSON.stringify(contact)
+    })
         .then((response) => response)
         .then((responseJson) => {
-          console.log(responseJson)
-          return responseJson
-
+          this.props.screenProps.getContacts()
         })
+        
         .catch((error) => {
           throw error;
         })
@@ -77,15 +69,17 @@ export default class Add extends Component {
                 onChangeText={(nickname) => this.setState({nickname})}
                 value={this.state.nickname}
                 placeholder={'Name'}
+                placeholderTextColor={'#575757'}
                 style={{backgroundColor: 'white', alignSelf: 'stretch', padding: 10,
                 borderRadius: 2}}
               />
               <TextInput
                 value={this.state.email}
                 placeholder={'Email'}
+                placeholderTextColor={'#575757'}
                 onChangeText={(text) => this.setState({email: text})}  
                 style={{backgroundColor: 'white', alignSelf: 'stretch', padding: 10,
-                borderRadius: 2, width: 200}} 
+                borderRadius: 2, width: 220}} 
                 />
             </View>
         <Button
@@ -97,10 +91,8 @@ export default class Add extends Component {
             </Text>
           } 
           onPress= { () => {
-              this.forceRemount()
               this.onSubmit()
               navigate('Home')
-              
            }
           }
         />

@@ -33,46 +33,12 @@ export default class Home extends Component {
         console.error(error);
       });
   }
-
-  componentDidUpdate(){
-    return fetch(`https://nudge-server.herokuapp.com/contacts/${this.props.screenProps.id}`)
-      .then((response) => response.json())
-      .then((responseJson) => {
-
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson.users,
-        }, function(){
-        });
-      })
-      .catch((error) =>{
-        console.error(error);
-      });
-  }
-
-  removeContact = () => {
-    return fetch(`https://nudge-server.herokuapp.com/delete/${this.props.screenProps.id}`)
-    .then((response) => response.json())
-    .then((responseJson) => {
-
-      this.setState({
-        isLoading: false,
-        dataSource: responseJson.users,
-      }, function(){
-      });
-    })
-    .catch((error) =>{
-      console.error(error);
-    });
-}
-  }
   
   render() {
     const { navigate } = this.props.navigation;
     if(this.state.isLoading){
       return(
         <View 
-          key = {1}
           style={{flex: 1, padding: 20}}
         >
           <ActivityIndicator/>
@@ -81,7 +47,6 @@ export default class Home extends Component {
     }
     return(
       <View 
-        key = {2}
         style={styles.container}>
         <Text 
           style={{fontSize:30}}>
@@ -92,7 +57,8 @@ export default class Home extends Component {
           renderItem={({item}) => 
           <View>
             <Text>
-             {item.nickname}<Text style={{display: 'flex', alignSelf: 'flex-end'}}> <MaterialCommunityIcons name="delete" size={20}  /></Text>
+             {item.nickname}<Text style={{display: 'flex', alignSelf: 'flex-end'}}> 
+             </Text>
             </Text>
             <Text>
             {item.email}
