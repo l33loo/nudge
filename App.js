@@ -42,8 +42,6 @@ export default class App extends React.Component {
     }
   }
 
-  //************************modify to log out properly ******************
-  // ***************** logged in is not setting to true, NOT CALLING FUNCTION***********
   loggedOut = () => {
     console.log('LOGGED OUT')
     if(this.state.id === ''){
@@ -55,7 +53,6 @@ export default class App extends React.Component {
 
 
   componentDidMount() {
-    console.log('Component Mounted')
     this.isMounted = true;
     this.changeState();
     this._subscribe();

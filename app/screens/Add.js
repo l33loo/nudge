@@ -15,12 +15,12 @@ export default class Add extends Component {
     }
   
   }
-
   forceRemount = () => {
     this.setState(({ uniqueValue }) => ({
       uniqueValue: uniqueValue + 1
     }))
   }
+
 
   static navigationOptions = {
     title: 'Add Contacts',
@@ -95,9 +95,8 @@ export default class Add extends Component {
             </Text>
           } 
           onPress= { () => {
-              this.onSubmit()
               this.forceRemount()
-              console.log('force remount')
+              this.onSubmit()
               navigate('Home')
               
            }

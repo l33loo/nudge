@@ -9,7 +9,7 @@ export default class Home extends Component {
   constructor(props){
     super(props);
     this.state = { 
-      isLoading: true
+      isLoading: true,
     }
   }
 
@@ -33,12 +33,28 @@ export default class Home extends Component {
       });
   }
 
+  componentDidUpdate(){
+    return fetch(`https://nudge-server.herokuapp.com/contacts/${this.props.screenProps.id}`)
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        this.setState({
+          isLoading: false,
+          dataSource: responseJson.users,
+        }, function(){
+        });
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
+  }
+
   render() {
     const { navigate } = this.props.navigation;
-
     if(this.state.isLoading){
       return(
         <View 
+          key = {1}
           style={{flex: 1, padding: 20}}
         >
           <ActivityIndicator/>
@@ -47,6 +63,7 @@ export default class Home extends Component {
     }
     return(
       <View 
+        key = {2}
         style={styles.container}>
         <Text 
           style={{fontSize:30}}>
@@ -65,6 +82,7 @@ export default class Home extends Component {
             </View>
           }
           keyExtractor={(item, index) => index.toString()}
+          
         />
         <Button
           text = {
@@ -78,19 +96,6 @@ export default class Home extends Component {
             </Text>
           } 
           onPress= { () => navigate('Add') }
-        />
-        <Button
-          text = {
-            <Text 
-              style={{
-                  color:colors.textColor, 
-                  textAlign: 'center'
-                }}
-            > 
-              Edit a Contact
-            </Text>
-          } 
-          onPress= { () => navigate('Settings') }
         />
         <Button
           text = {
