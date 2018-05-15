@@ -3,6 +3,7 @@ import { FlatList, ActivityIndicator, StyleSheet, Text, View } from 'react-nativ
 import Button from '../../app/components/Button/Button';
 import TextInput from '../../app/components/TextInput/TextInput';
 import {colors} from "../../app/config/styles";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 export default class Home extends Component {
@@ -49,6 +50,23 @@ export default class Home extends Component {
       });
   }
 
+  removeContact = () => {
+    return fetch(`https://nudge-server.herokuapp.com/delete/${this.props.screenProps.id}`)
+    .then((response) => response.json())
+    .then((responseJson) => {
+
+      this.setState({
+        isLoading: false,
+        dataSource: responseJson.users,
+      }, function(){
+      });
+    })
+    .catch((error) =>{
+      console.error(error);
+    });
+}
+  }
+  
   render() {
     const { navigate } = this.props.navigation;
     if(this.state.isLoading){
@@ -74,7 +92,7 @@ export default class Home extends Component {
           renderItem={({item}) => 
           <View>
             <Text>
-             {item.nickname}
+             {item.nickname}<Text style={{display: 'flex', alignSelf: 'flex-end'}}> <MaterialCommunityIcons name="delete" size={20}  /></Text>
             </Text>
             <Text>
             {item.email}
