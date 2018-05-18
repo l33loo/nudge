@@ -12,8 +12,8 @@ export default class BlankTextInput extends Component {
     return (
       <TextInput
         style={this.props.style}
-        // onChangeText={(text) => this.setState({text})}
-        // value={this.props.text}
+        onChangeText={(text) => this.setState({text})}
+        value={this.props.text}
         placeholder={this.props.text}
       />
     );

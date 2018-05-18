@@ -3,12 +3,15 @@ import { FlatList, ActivityIndicator, StyleSheet, Text, View } from 'react-nativ
 import Button from '../../app/components/Button/Button';
 import TextInput from '../../app/components/TextInput/TextInput';
 import {colors} from "../../app/config/styles";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 export default class Home extends Component {
   constructor(props){
     super(props);
-    this.state ={ isLoading: true}
+    this.state = { 
+      isLoading: true,
+    }
   }
 
   static navigationOptions = {
@@ -16,13 +19,13 @@ export default class Home extends Component {
   };
 
   componentDidMount(){
-    return fetch('https://facebook.github.io/react-native/movies.json')
+    return fetch(`https://nudge-server.herokuapp.com/contacts/${this.props.screenProps.id}`)
       .then((response) => response.json())
       .then((responseJson) => {
 
         this.setState({
           isLoading: false,
-          dataSource: responseJson.movies,
+          dataSource: responseJson.users,
         }, function(){
         });
       })
@@ -30,10 +33,9 @@ export default class Home extends Component {
         console.error(error);
       });
   }
-
+  
   render() {
     const { navigate } = this.props.navigation;
-
     if(this.state.isLoading){
       return(
         <View 
@@ -53,11 +55,18 @@ export default class Home extends Component {
         <FlatList
           data={this.state.dataSource}
           renderItem={({item}) => 
+          <View>
             <Text>
-              {item.title}, 
-              {item.releaseYear}
-            </Text>}
+             {item.nickname}<Text style={{display: 'flex', alignSelf: 'flex-end'}}> 
+             </Text>
+            </Text>
+            <Text>
+            {item.email}
+            </Text>
+            </View>
+          }
           keyExtractor={(item, index) => index.toString()}
+          
         />
         <Button
           text = {
@@ -67,10 +76,28 @@ export default class Home extends Component {
                   textAlign: 'center'
                 }}
             > 
-              Edit 
+              Add a New Contact 
             </Text>
           } 
-          onPress= { () => navigate('Settings') }
+          onPress= { () => navigate('Add') }
+        />
+        <Button
+          text = {
+            <Text 
+              style={{
+                  color:colors.textColor, 
+                  textAlign: 'center'
+                }}
+            > 
+              Logout
+            </Text>
+          } 
+          
+          onPress= { () => {
+            this.props.screenProps.changeState() 
+            navigate('Enter')
+            }
+          }
         />
       </View>
     );

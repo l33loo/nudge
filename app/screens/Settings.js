@@ -12,25 +12,24 @@ export default class Settings extends Component {
   }
 
   static navigationOptions = {
-    title: 'Settings',
+    title: 'Edit Contacts',
   };
 
   componentDidMount(){
-    return fetch('https://facebook.github.io/react-native/movies.json')
+    return fetch(`https://nudge-server.herokuapp.com/contacts/${this.props.screenProps.id}`)
       .then((response) => response.json())
       .then((responseJson) => {
 
         this.setState({
           isLoading: false,
-          dataSource: responseJson.movies,
-        }, function(){
+          dataSource: responseJson.users,
         });
       })
       .catch((error) =>{
         console.error(error);
       });
   }
-
+  
   render() {
     const { navigate } = this.props.navigation;
 
@@ -41,6 +40,7 @@ export default class Settings extends Component {
         </View>
       )
     }
+    
     return(
       <View 
         style={styles.container}
@@ -54,10 +54,10 @@ export default class Settings extends Component {
           renderItem={({item}) => 
             <View>
               <TextInput 
-                text={item.title}  
+                text={item.nickname}  
               />
               <TextInput 
-                text={item.releaseYear}  
+                text={item.email}  
                 />
             </View>
           }
