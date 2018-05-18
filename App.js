@@ -70,13 +70,15 @@ export default class App extends React.Component {
     this.isMounted = true;
     this.changeState();
     this._subscribe();
-    if(this.state.loggedIn && this.state.notificationsEnabled) {
+    // if(this.state.loggedIn) {
       setInterval(() => {
         if (Date.now() - this.state.timeLastActivity < 10000 ) {
+          console.log('before ping')
           this.sendPing()
+          console.log('ping')
         }
       }, 5000);
-    } 
+    // } 
   }
 
   getInQueue() {
@@ -87,7 +89,7 @@ export default class App extends React.Component {
   }
 
   sendPing = () => {
-    fetch("https://nudge-server.herokuapp.com/");
+    fetch(`https://nudge-server.herokuapp.com/ping/${this.state.id}`);
     console.log('ping!')
   }
 
